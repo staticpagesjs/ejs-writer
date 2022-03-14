@@ -17,6 +17,7 @@ This package is part of the StaticPagesJs project, see:
 | `viewsDir` | `string \| string[]` | `views` | One or more directory path where the templates are found. |
 | `outDir` | `string` | `build` | Directory where the rendered output is saved. |
 | `outFile` | `string \| (d: Data) => string` | *see outFile defaults section* | Path of the rendered output relative to `outDir`. |
+| `ejsOptions` | `ejs.Options` | `{}` | Additional options to pass to the `renderTemplate` method. |
 | `showdownEnabled` | `boolean` | `true` | Register a markdown context function (`this.markdown()`); uses [showdown](http://showdownjs.com/). |
 | `showdownOptions` | `showdown.ConverterOptions` | `{ simpleLineBreaks: true, ghCompatibleHeaderId: true, customizedHeaderId: true, tables: true }` | Custom options for the showdown markdown renderer. |
 
