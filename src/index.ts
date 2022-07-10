@@ -4,8 +4,6 @@ import showdown from 'showdown';
 import { renderFile } from 'ejs';
 import { fileWriter, FileWriterOptions } from '@static-pages/file-writer';
 
-export * from './cli.js';
-
 export type EJSWriterOptions = {
 	view?: string | { (data: Record<string, unknown>): string };
 	viewsDir?: string | string[];
