@@ -12,16 +12,14 @@ export type EJSWriterOptions = {
 	showdownOptions?: showdown.ConverterOptions;
 } & Omit<FileWriterOptions, 'renderer'>;
 
-export const ejsWriter = (options: EJSWriterOptions = {}) => {
-	const {
-		view = 'main.ejs',
-		viewsDir = 'views',
-		ejsOptions = {},
-		showdownEnabled = true,
-		showdownOptions = {},
-		...rest
-	} = options;
-
+export const ejsWriter = ({
+	view = 'main.ejs',
+	viewsDir = 'views',
+	ejsOptions = {},
+	showdownEnabled = true,
+	showdownOptions = {},
+	...rest
+}: EJSWriterOptions = {}) => {
 	if (typeof view !== 'string' && typeof view !== 'function')
 		throw new Error('ejs-writer \'view\' option expects a string or a function.');
 
