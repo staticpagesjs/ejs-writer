@@ -62,8 +62,8 @@ export const ejsWriter = ({
 				path.resolve(viewDir, resolvedView),
 				data,
 				{
-					...ejsOptions,
 					views: viewsDirArray,
+					...ejsOptions,
 				},
 				(err, str) => err ? reject(err) : resolve(str)
 			);
