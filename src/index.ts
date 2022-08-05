@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import showdown from 'showdown';
+import * as showdown from 'showdown';
 import { renderFile } from 'ejs';
 import { fileWriter, FileWriterOptions } from '@static-pages/file-writer';
 
@@ -34,7 +34,7 @@ export const ejsWriter = ({
 
 	// Provide a built-in markdown filter
 	if (showdownEnabled) {
-		const converter = new showdown.Converter({
+		const converter = new ((showdown as unknown as { default: typeof showdown })?.default ?? showdown).Converter({
 			simpleLineBreaks: true,
 			ghCompatibleHeaderId: true,
 			customizedHeaderId: true,
