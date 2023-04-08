@@ -22,8 +22,10 @@ test('can render a simple template', async () => {
 	const writer = ejsWriter();
 
 	await writer({
-		url: 'unnamed',
-		body: 'foo',
+		value: {
+			url: 'unnamed',
+			body: 'foo',
+		}
 	});
 
 	const expectedPath = 'dist/unnamed.html';
@@ -43,8 +45,10 @@ test('can set multiple views dir with initial view', async () => {
 	});
 
 	await writer({
-		url: 'unnamed',
-		body: 'foo',
+		value: {
+			url: 'unnamed',
+			body: 'foo',
+		}
 	});
 
 	const expectedPath = 'dist/unnamed.html';
@@ -65,8 +69,10 @@ test('can use ejsCoptions to provide context variables', async () => {
 	});
 
 	await writer({
-		url: 'unnamed',
-		body: 'foo',
+		value: {
+			url: 'unnamed',
+			body: 'foo',
+		}
 	});
 
 	const expectedPath = 'dist/unnamed.html';
@@ -82,8 +88,10 @@ test('can set output dir', async () => {
 	});
 
 	await writer({
-		url: 'unnamed',
-		body: 'foo',
+		value: {
+			url: 'unnamed',
+			body: 'foo',
+		}
 	});
 
 	const expectedPath = 'dist/unnamed.html';
@@ -97,8 +105,10 @@ test('can set outfile name via url', async () => {
 	const writer = ejsWriter();
 
 	await writer({
-		url: 'my/output.file',
-		body: 'foo',
+		value: {
+			url: 'my/output.file',
+			body: 'foo',
+		}
 	});
 
 	const expectedPath = 'dist/my/output.file.html';
@@ -112,10 +122,12 @@ test('can set outfile name via header.path', async () => {
 	const writer = ejsWriter();
 
 	await writer({
-		header: {
-			path: 'my/output.file'
-		},
-		body: 'foo',
+		value: {
+			header: {
+				path: 'my/output.file'
+			},
+			body: 'foo',
+		}
 	});
 
 	const expectedPath = 'dist/my/output.html';
@@ -131,7 +143,9 @@ test('can set outfile name via outFile option', async () => {
 	});
 
 	await writer({
-		body: 'foo',
+		value: {
+			body: 'foo',
+		}
 	});
 
 	const expectedPath = 'dist/my/output.file';
@@ -148,10 +162,12 @@ test('can turn off custom markdown filter', async () => {
 
 	await expect(async () => {
 		await writer({
-			url: 'unnamed',
-			body: 'foo',
+			value: {
+				url: 'unnamed',
+				body: 'foo',
+			}
 		});
-	  })
+	})
 		.rejects
 		.toThrow('this.markdown is not a function');
 });
@@ -165,8 +181,10 @@ test('can configure showdown filter', async () => {
 	});
 
 	await writer({
-		url: 'unnamed',
-		body: '# foo',
+		value: {
+			url: 'unnamed',
+			body: '# foo',
+		}
 	});
 
 	const expectedPath = 'dist/unnamed.html';

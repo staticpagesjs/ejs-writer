@@ -1,23 +1,23 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import * as showdown from 'showdown';
+import { marked } from 'marked';
 import { renderFile } from 'ejs';
-import { fileWriter, FileWriterOptions } from '@static-pages/file-writer';
+import { fileWriter } from '@static-pages/file-writer';
 
 export type EJSWriterOptions = {
 	view?: string | { (data: Record<string, unknown>): string };
 	viewsDir?: string | string[];
 	ejsOptions?: ejs.Options;
-	showdownEnabled?: boolean;
-	showdownOptions?: showdown.ConverterOptions;
-} & Omit<FileWriterOptions, 'renderer'>;
+	markedEnabled?: boolean;
+	markedOptions?: marked.MarkedOptions;
+} & Omit<fileWriter.Options, 'renderer'>;
 
 export const ejsWriter = ({
 	view = 'main.ejs',
 	viewsDir = 'views',
 	ejsOptions = {},
-	showdownEnabled = true,
-	showdownOptions = {},
+	markedEnabled = true,
+	markedOptions = {},
 	...rest
 }: EJSWriterOptions = {}) => {
 	if (typeof view !== 'string' && typeof view !== 'function')
@@ -29,28 +29,20 @@ export const ejsWriter = ({
 	if (typeof ejsOptions !== 'object' || !ejsOptions)
 		throw new Error('ejs-writer \'ejsOptions\' option expects an object.');
 
-	if (typeof showdownOptions !== 'object' || !showdownOptions)
-		throw new Error('ejs-writer \'showdownOptions\' option expects an object.');
+	if (typeof markedOptions !== 'object' || !markedOptions)
+		throw new Error('ejs-writer \'markedOptions\' option expects an object.');
 
 	// Provide a built-in markdown filter
-	if (showdownEnabled) {
-		const converter = new ((showdown as unknown as { default: typeof showdown })?.default ?? showdown).Converter({
-			simpleLineBreaks: true,
-			ghCompatibleHeaderId: true,
-			customizedHeaderId: true,
-			tables: true,
-			...showdownOptions,
-		});
-
+	if (markedEnabled) {
 		if (typeof ejsOptions.context !== 'object' || !ejsOptions.context) {
 			ejsOptions.context = {};
 		}
-		ejsOptions.context.markdown = (md: string) => converter.makeHtml(md);
+		ejsOptions.context.markdown = (md: string) => marked(md, markedOptions);
 	}
 
 	const viewsDirArray = Array.isArray(viewsDir) ? viewsDir : [viewsDir];
 
-	const writer = fileWriter({
+	return fileWriter({
 		...rest,
 		renderer: data => new Promise((resolve, reject) => {
 			const resolvedView = typeof view === 'function' ? view(data) : view;
@@ -69,8 +61,6 @@ export const ejsWriter = ({
 			);
 		}),
 	});
-
-	return (data: Record<string, unknown>): Promise<void> => writer(data);
 };
 
 export default ejsWriter;
